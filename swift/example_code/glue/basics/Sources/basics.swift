@@ -40,6 +40,7 @@ import Foundation
 import ArgumentParser
 import AWSGlue
 import ClientRuntime
+import ServiceManager
 
 struct ExampleCommand: ParsableCommand {
     @Option(help: "The AWS IAM role to use for AWS Glue calls.")
@@ -179,7 +180,7 @@ struct ExampleCommand: ParsableCommand {
         //=====================================================================
 
         print("Getting the crawler's database...")
-        let database = try await glue.getDatabase(name: databaseName)
+        _ = try await glue.getDatabase(name: databaseName)
 
         // Get a list of the tables in the database. In this example, there
         // should only be one.
