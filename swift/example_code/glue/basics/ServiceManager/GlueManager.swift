@@ -33,9 +33,9 @@ public enum GlueManagerError: Error {
 // snippet-start:[glue.swift.basics.gluemanager.session-prototype]
 /// A protocol describing the implementation of functions that allow either
 /// calling through to AWS Glue or mocking those functions for testing.
-protocol GlueSessionPrototype {
-    func createCrawler(input: CreateCrawlerInput) async throws -> CreateCrawlerOutputResponse
-    func deleteCrawler(input: DeleteCrawlerInput) async throws -> DeleteCrawlerOutputResponse
+public protocol GlueSessionPrototype {
+    mutating func createCrawler(input: CreateCrawlerInput) async throws -> CreateCrawlerOutputResponse
+    mutating func deleteCrawler(input: DeleteCrawlerInput) async throws -> DeleteCrawlerOutputResponse
     func startCrawler(input: StartCrawlerInput) async throws -> StartCrawlerOutputResponse
     func stopCrawler(input: StopCrawlerInput) async throws -> StopCrawlerOutputResponse
     func getCrawler(input: GetCrawlerInput) async throws -> GetCrawlerOutputResponse
@@ -57,14 +57,14 @@ protocol GlueSessionPrototype {
 // snippet-start:[glue.swift.basics.gluesession]
 public struct GlueSession: GlueSessionPrototype {
     let awsRegion: String
-    let client: GlueClient
+    var client: GlueClient
 
     // snippet-start:[glue.swift.basics.gluesession.init]
     /// Create a new Glue session that is actually connected to AWS Glue.
     /// 
     /// - Parameters:
     ///   - region: The AWS Region in which to use Amazon Glue.
-    init(region: String = "us-east-2") async throws {
+    public init(region: String = "us-east-2") async throws {
         self.awsRegion = region
         client = try await GlueClient(region: self.awsRegion)
     }
@@ -174,7 +174,7 @@ public struct GlueSession: GlueSessionPrototype {
 /// return mock data and/or do whatever testing or validation of data you wish
 /// to do.
 public class GlueManager {
-    private let session: GlueSessionPrototype
+    public var session: GlueSessionPrototype
 
     // snippet-start:[glue.swift.basics.gluemanager.init]
     /// Initialize a new GlueManager instance.
@@ -182,7 +182,7 @@ public class GlueManager {
     /// - Parameters:
     ///   - session: The `GlueSessionPrototype` to use when making AWS Glue
     ///     calls.
-    init(session: GlueSessionPrototype) {
+    public init(session: GlueSessionPrototype) {
         self.session = session
     }
     // snippet-end:[glue.swift.basics.gluemanager.init]
@@ -234,8 +234,8 @@ public class GlueManager {
                               cronSchedule: String? = nil,
                               databaseName: String? = nil,
                               tablePrefix: String? = nil) async throws {
-        // Create a Glue S3 target from the S3 path string and create a
-        // crawler target list from it.
+        // Create a Glue S3 target from the S3 path string. Then create a
+        // crawler target list from that.
 
         let s3Target = GlueClientTypes.S3Target(path: s3Path)
         let targetList = GlueClientTypes.CrawlerTargets(s3Targets: [s3Target])

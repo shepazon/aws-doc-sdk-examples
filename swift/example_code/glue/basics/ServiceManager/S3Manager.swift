@@ -34,7 +34,7 @@ public enum S3ManagerError: Error {
 /// A prototype representing the signatures of the AWS SDK for Swift functions
 /// that can be implemented either to pass through to the actual SDK functions
 /// of the same names or to mock functions used for testing.
-protocol S3SessionPrototype {
+public protocol S3SessionPrototype {
     func putObject(input: PutObjectInput) async throws -> PutObjectOutputResponse
     func createBucket(input: CreateBucketInput) async throws -> CreateBucketOutputResponse
     func deleteBucket(input: DeleteBucketInput) async throws -> DeleteBucketOutputResponse
@@ -51,36 +51,36 @@ public struct S3Session: S3SessionPrototype {
     let awsRegion: String
     let client: S3Client
 
-    init(region: String = "us-east-2") async throws {
+    public init(region: String = "us-east-2") async throws {
         self.awsRegion = region
         client = try await S3Client(region: awsRegion)
     }
 
-    func putObject(input: PutObjectInput) async throws -> PutObjectOutputResponse {
+    public func putObject(input: PutObjectInput) async throws -> PutObjectOutputResponse {
         return try await client.putObject(input: input)
     }
 
-    func createBucket(input: CreateBucketInput) async throws
+    public func createBucket(input: CreateBucketInput) async throws
             -> CreateBucketOutputResponse {
         return try await client.createBucket(input: input)
     }
 
-    func deleteBucket(input: DeleteBucketInput) async throws
+    public func deleteBucket(input: DeleteBucketInput) async throws
             -> DeleteBucketOutputResponse {
         return try await client.deleteBucket(input: input)
     }
 
-    func copyObject(input: CopyObjectInput) async throws
+    public func copyObject(input: CopyObjectInput) async throws
             -> CopyObjectOutputResponse {
         return try await client.copyObject(input: input)
     }
 
-    func deleteObject(input: DeleteObjectInput) async throws
+    public func deleteObject(input: DeleteObjectInput) async throws
             -> DeleteObjectOutputResponse {
         return try await client.deleteObject(input: input)
     }
 
-    func listObjectsV2(input: ListObjectsV2Input) async throws
+    public func listObjectsV2(input: ListObjectsV2Input) async throws
             -> ListObjectsV2OutputResponse {
         return try await client.listObjectsV2(input: input)
     }
@@ -103,7 +103,7 @@ public class S3Manager {
     /// - Parameters:
     ///   - session: The session object, based on the `S3SessionPrototype`
     ///     protocol, to use for calls to AWS Glue API functions.
-    init(session: S3SessionPrototype) {
+    public init(session: S3SessionPrototype) {
         self.session = session
     }
     // snippet-end:[glue.swift.basics.s3manager.init]

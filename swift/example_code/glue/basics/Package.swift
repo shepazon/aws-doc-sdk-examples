@@ -42,14 +42,25 @@ let package = Package(
         .executableTarget(
             name: "basics",
             dependencies: [
-                .product(name: "AWSGlue", package: "aws-sdk-swift"),
-                .product(name: "AWSS3", package: "aws-sdk-swift"),
+//                .product(name: "AWSGlue", package: "aws-sdk-swift"),
+//                .product(name: "AWSS3", package: "aws-sdk-swift"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "ServiceManager",
                 "SwiftUtilities"
             ],
             path: "./Sources"
         ),
 // snippet-end:[glue.swift.basics.package.target.executable]
+// snippet-start:[glue.swift.basics.package.target.manager]
+        .target(
+            name: "ServiceManager",
+            dependencies: [
+                .product(name: "AWSS3", package: "aws-sdk-swift"),
+                .product(name: "AWSGlue", package: "aws-sdk-swift")
+            ],
+            path: "./ServiceManager"
+        ),
+// snippet-end:[glue.swift.basics.package.target.manager]
 // snippet-start:[glue.swift.basics.package.target.tests]
         .testTarget(
             name: "basics-tests",
