@@ -578,7 +578,8 @@ iam_CreateAccessKey:
         - sdk_version: 1
           github: swift/example_code/iam
           excerpts:
-            - description: ```import AWSIAM```
+            - description: >-
+                <programlisting language="swift" linenumbering="unnumbered">import AWSDynamoDB</programlisting>
               snippet_tags:
                 - iam.swift.basics.iam.createaccesskey
     Bash:
