@@ -21,7 +21,19 @@ struct MockingDemo {
         /// A ``BucketManager`` object that will be initialized to call the
         /// SDK using the session.
         let bucketMgr: BucketManager
+
+        // Configure AWS SDK for Swift logging. This provides information at
+        // a higher level.
+
+        await SDKLoggingSystem().initialize(logLevel: .error)
         
+        // Configure Common RunTime (CRT) logging. This controls logging of
+        // lower-level information, such as HTTP requests and responses.
+        // This is not usually necessary, but can be included when you need
+        // more detailed information than the SDK's logging system offers.
+
+        SDKDefaultIO.shared.setLogLevel(level: .fatal)
+
         // Create the ``S3Session`` and a ``BucketManager`` that calls the SDK
         // using it.
         do {
