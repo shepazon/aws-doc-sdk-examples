@@ -26,7 +26,7 @@ struct MockingDemo {
         // a higher level.
 
         await SDKLoggingSystem().initialize(logLevel: .error)
-        
+
         // Configure Common RunTime (CRT) logging. This controls logging of
         // lower-level information, such as HTTP requests and responses.
         // This is not usually necessary, but can be included when you need
